@@ -5,11 +5,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  {% if title %}
+  <title>First App | {{title}}</title>
+  {% else %}
+  <title>First App</title>
+  {% endif %}
 </head>
 
 <body>
-  <h1>Hello Flask</h1>
+  {% block content %}
+  <p>Replace me</p>
+  {% endblock content %}
 </body>
 
 </html>
