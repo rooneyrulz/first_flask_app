@@ -1,6 +1,9 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, flash, redirect, url_for
+from forms import RegisterForm, LoginForm
 
 app = Flask(__name__)
+
+app.config['SECRET_KEY'] = '157e035b48b7865868e7169fab329fd79b1'
 
 posts = [
   {
@@ -25,11 +28,23 @@ def dashboard():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-  return render_template('auth/register.html', title='Register')
+  form = RegisterForm()
+  if form.validate_on_submit():
+    flash(f'Account has been created for {form.username.data}!', 'success')
+    print('success')
+    return redirect(url_for('dashboard'))
+  return render_template('auth/register.html', title='Register', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-  return render_template('auth/login.html', title='Log In')
+  form = LoginForm()
+  if form.validate_on_submit():
+    if form.email.data == 'ruzny@ruzny.com' and form.password.data == 'ruzny':
+      flash(f'Welcome, You have been logged in!', 'success')
+      return redirect(url_for('dashboard'))
+    else:
+      flash('Oops, Invalid Credentials!', 'danger')
+  return render_template('auth/login.html', title='Log In', form=form)
 
 @app.route('/posts')
 def posts():
