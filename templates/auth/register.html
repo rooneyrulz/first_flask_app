@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Register</h1>
-<br>
-<div class="register">
+<div class="register" style="width: 60%; margin: auto">
+  <h3 class="text-center mb-0">Register</h3>
+  <br>
   <form action="" method="POST">
     {{ form.hidden_tag() }}
     <div class="form-group">
@@ -56,7 +56,7 @@
       </div>
       {% endfor %}
       {% else %}
-      {{ form.confirm_password(class="form-control form-control-lg", placeholder="Enter Enter Password Again") }}
+      {{ form.confirm_password(class="form-control form-control-lg", placeholder="Enter Password Again") }}
       {% endif %}
     </div>
     <div class="form-group">
