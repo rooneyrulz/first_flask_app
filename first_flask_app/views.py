@@ -1,7 +1,7 @@
 from flask import render_template, flash, redirect, url_for
 from first_flask_app.forms import RegisterForm, LoginForm
 from first_flask_app.models import User, Post
-from first_flask_app import app
+from first_flask_app import app, db, bcrypt
 
 @app.route('/')
 def index():
@@ -19,9 +19,16 @@ def dashboard():
 def register():
   form = RegisterForm()
   if form.validate_on_submit():
-    flash(f'Account has been created for {form.username.data}!', 'success')
-    print('success')
-    return redirect(url_for('dashboard'))
+    hashed_pwd = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+    user = User(
+      username=form.username.data,
+      email=form.email.data,
+      password=hashed_pwd
+    )
+    db.session.add(user)
+    db.session.commit()
+    flash(f"Account has been created successfully, Let's login!", 'success')
+    return redirect(url_for('login'))
   return render_template('auth/register.html', title='Register', form=form)
 
 @app.route('/login', methods=['GET', 'POST'])
